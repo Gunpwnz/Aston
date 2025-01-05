@@ -9,6 +9,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,7 +30,10 @@ public class MTS {
         paymentIframe = new PaymentIframe(driver);
         driver.get("https://www.mts.by/?hash-offset=70&hash-dur=1300#pay-section");
         driver.manage().window().maximize();
-        WebElement cookieLocator = driver.findElement(By.xpath("//*[@id='cookie-agree']"));
+
+        // Ожидание загрузки куки
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement cookieLocator = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cookie-agree']")));
         if (cookieLocator.isDisplayed()) {
             cookieLocator.click();
         }
@@ -35,6 +42,11 @@ public class MTS {
     @AfterEach
     public void tearDown() {
         if (driver != null) {
+            try {
+                Thread.sleep(2000); // Пауза в 2 секунды между тестами
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             driver.quit();
         }
     }
