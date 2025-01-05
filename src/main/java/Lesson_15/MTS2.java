@@ -1,4 +1,4 @@
-package Lesson_16;
+package Lesson_15;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -54,6 +54,3 @@ public class MTS2 {
         driver.findElement(continueButton).click();
     }
 }
-
-
-
